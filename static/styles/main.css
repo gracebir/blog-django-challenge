@@ -1,5 +1,5 @@
 body{
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 li{
@@ -150,6 +150,14 @@ header {
         opacity: 1;
      }
 
+     .h-grid{
+        margin-top: 3rem;
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 3rem;
+        font-family: 'Poppins', sans-serif !important;
+    }
+
 }
 
 /* header section styles*/
@@ -196,4 +204,62 @@ header {
 
 .banner-container a:hover{
     background-color: #d1d1d1;
+}
+
+/* blog style */
+
+.h-grid{
+    margin-top: 3rem;
+    display: grid !important;
+    grid-template-columns: 3fr 2fr;
+    gap: 3rem;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.blog-container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.blog-card{
+    display: flex;
+    flex-direction: column;
+}
+
+.b-card-user{
+    font-weight: 500;
+    font-size: .8rem;
+}
+
+.b-card-title{
+    font-weight: 700;
+    font-weight: 1.2rem;
+}
+
+.b-card-body{
+    font-size: .9rem;
+    color: rgb(117, 117, 117);
+}
+
+.b-card-footer{
+    color: rgb(117, 117, 117);
+    font-size: .7rem;
+}
+
+.about{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.about-title{
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.about p{
+    color: rgb(117, 117, 117);
+    font-size: .9rem;
 }
