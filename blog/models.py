@@ -18,12 +18,12 @@ class BlogPost(models.Model):
         return self.title
 
   
-class Comment(models.Model):
-    host = models.ForeignKey(User, on_delete=models.CASCADE)  
-    blog = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
-    body = models.TextField()
-    update_on = models.DateTimeField(auto_now=True)
-    created_on = models.DateTimeField(auto_now_add=True)
+# class Comment(models.Model):
+#     host = models.ForeignKey(User, on_delete=models.CASCADE)  
+#     blog = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
+#     body = models.TextField()
+#     update_on = models.DateTimeField(auto_now=True)
+#     created_on = models.DateTimeField(auto_now_add=True)
     
-    def __str__(self):
-        return self.body[0:50]
+#     def __str__(self):
+#         return self.body[0:50]
