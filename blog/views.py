@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import BlogPost
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from .forms import BlogForm
 # Create your views here.
 
 def loginPage(request):
@@ -54,13 +55,16 @@ def logoutUser(request):
     return redirect('home')
 
 def homePage(request):
-    blogs = BlogPost.objects.all()
+    blogs = BlogPost.objects.filter(status=1)
     context = {'blogs': blogs}
     return render(request, 'blog/home.html', context)
 
 def blogDetail(request, slug):
-    return HttpResponse('blog Detail')
+    blog = BlogPost.objects.get(slug=slug)
+    context = {'blog':blog}
+    return render(request, 'blog/detail.html', context)
 
+@login_required(login_url='login')
 def write(request):
     status = 0
     if(request.method == 'POST'):
@@ -78,3 +82,30 @@ def write(request):
         blog.save()
     context = {}
     return render(request, 'blog/write_form.html', context)
+
+@login_required(login_url='login')
+def deleteBlog(request, slug):
+    blog = BlogPost.objects.get(slug=slug)
+    if(request.method == 'POST'):
+        blog.delete()
+        return redirect('home')
+    return render(request, 'blog/delete_blog.html', {'obj': blog})
+
+
+def draftPage(request):
+    blogs = BlogPost.objects.filter(status=0)
+    context = {'blogs': blogs}
+    return render(request, 'blog/draft.html', context)
+
+
+@login_required(login_url='login')
+def updateBlog(request, slug):
+    blog = BlogPost.objects.get(slug=slug)
+    form = BlogForm(instance=blog)
+    if(request.method == 'POST'):
+        form = BlogForm(request.POST, instance=blog)
+        if(form.is_valid()):
+            form.save()
+            return redirect('home')
+    context = {'form': form}   
+    return render(request, 'blog/edit_form.html', {'form': form})
