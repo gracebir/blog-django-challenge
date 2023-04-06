@@ -1,27 +1,14 @@
 
 <div class="blog-container">
+    {% for blog in blogs%}
     <div class="blog-card">
-        <span class="b-card-user">Data & Society: PointsRobyn Caplanin Data & Society: Points</span>
-        <h3 class="b-card-title">The TikTok Teens Go To Washington</h3>
-        <p class="b-card-body">TikTok videos underscore the gap in expertise between those who seek to regulate technology and those who use it.</p>
-        <span class="b-card-footer">Mar 32 - 7 min read</span>
+        <span class="b-card-user">By {{ blog.author.username }}</span>
+        <h3 class="b-card-title">{{ blog.title }}</h3>
+        <p class="b-card-body">{{ blog.content|slice:":200"}}</p>
+        <div class="b-card-footer">
+            <span>{{blog.created_on|timesince}}</span>
+            <a class="btn btn-dark" href="">Read more</a>
+        </div>
     </div>
-    <div class="blog-card">
-        <span class="b-card-user">Data & Society: PointsRobyn Caplanin Data & Society: Points</span>
-        <h3 class="b-card-title">The TikTok Teens Go To Washington</h3>
-        <p class="b-card-body">TikTok videos underscore the gap in expertise between those who seek to regulate technology and those who use it.</p>
-        <span class="b-card-footer">Mar 32 - 7 min read</span>
-    </div>
-    <div class="blog-card">
-        <span class="b-card-user">Data & Society: PointsRobyn Caplanin Data & Society: Points</span>
-        <h3 class="b-card-title">The TikTok Teens Go To Washington</h3>
-        <p class="b-card-body">TikTok videos underscore the gap in expertise between those who seek to regulate technology and those who use it.</p>
-        <span class="b-card-footer">Mar 32 - 7 min read</span>
-    </div>
-    <div class="blog-card">
-        <span class="b-card-user">Data & Society: PointsRobyn Caplanin Data & Society: Points</span>
-        <h3 class="b-card-title">The TikTok Teens Go To Washington</h3>
-        <p class="b-card-body">TikTok videos underscore the gap in expertise between those who seek to regulate technology and those who use it.</p>
-        <span class="b-card-footer">Mar 32 - 7 min read</span>
-    </div>
+    {% endfor %}
 </div>

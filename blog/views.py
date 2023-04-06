@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
+from .models import BlogPost
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -53,12 +54,27 @@ def logoutUser(request):
     return redirect('home')
 
 def homePage(request):
-    context = {}
+    blogs = BlogPost.objects.all()
+    context = {'blogs': blogs}
     return render(request, 'blog/home.html', context)
 
 def blogDetail(request, slug):
     return HttpResponse('blog Detail')
 
 def write(request):
+    status = 0
+    if(request.method == 'POST'):
+        title = request.POST.get('title')
+        slug = request.POST.get('slug')
+        author = request.user
+        content = request.POST.get('content')
+        status_str = request.POST.get('status')
+        print('content',content)
+        if(status_str == 'Publish'):
+            status = 1
+        else:
+            status = 0
+        blog = BlogPost(title=title, slug=slug, author=author, content=content, status=int(status))
+        blog.save()
     context = {}
     return render(request, 'blog/write_form.html', context)
