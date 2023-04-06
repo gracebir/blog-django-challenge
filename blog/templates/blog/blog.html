@@ -7,7 +7,7 @@
         <p class="b-card-body">{{ blog.content|slice:":200"}}</p>
         <div class="b-card-footer">
             <span>{{blog.created_on|timesince}}</span>
-            <a class="btn btn-dark" href="">Read more</a>
+            <a class="btn btn-dark" href="{% url 'post_detail' blog.slug %}">Read more</a>
         </div>
     </div>
     {% endfor %}
