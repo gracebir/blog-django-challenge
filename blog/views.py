@@ -1,11 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import BlogPost
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .forms import BlogForm
+from .forms import BlogForm, UserForm
 # Create your views here.
 
 def loginPage(request):
@@ -30,11 +29,12 @@ def loginPage(request):
     
     return render(request, 'blog/login_register.html', context)
 
+#register
 def registerPage(request):
     page = 'register'
-    form = UserCreationForm()
+    form = UserForm()
     if(request.method == 'POST'):
-        form = UserCreationForm(request.POST)
+        form = UserForm(request.POST)
         if(form.is_valid()):
             user = form.save(commit=False)
             user.username = user.username.lower()
@@ -54,16 +54,19 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+#home page
 def homePage(request):
     blogs = BlogPost.objects.filter(status=1)
     context = {'blogs': blogs}
     return render(request, 'blog/home.html', context)
 
+#blog detail
 def blogDetail(request, slug):
     blog = BlogPost.objects.get(slug=slug)
     context = {'blog':blog}
     return render(request, 'blog/detail.html', context)
 
+#add a blog 
 @login_required(login_url='login')
 def write(request):
     status = 0
@@ -83,29 +86,37 @@ def write(request):
     context = {}
     return render(request, 'blog/write_form.html', context)
 
+
+#delete a blog
 @login_required(login_url='login')
 def deleteBlog(request, slug):
     blog = BlogPost.objects.get(slug=slug)
+    if(request.user != blog.author):
+        return HttpResponse('You are allowed here!!')
     if(request.method == 'POST'):
         blog.delete()
         return redirect('home')
     return render(request, 'blog/delete_blog.html', {'obj': blog})
 
 
+#display draft blog
 def draftPage(request):
     blogs = BlogPost.objects.filter(status=0)
     context = {'blogs': blogs}
     return render(request, 'blog/draft.html', context)
 
 
+#update a blog
 @login_required(login_url='login')
 def updateBlog(request, slug):
     blog = BlogPost.objects.get(slug=slug)
     form = BlogForm(instance=blog)
+    if(request.user != blog.author):
+        return HttpResponse('You are allowed here!!')
     if(request.method == 'POST'):
         form = BlogForm(request.POST, instance=blog)
         if(form.is_valid()):
             form.save()
             return redirect('home')
     context = {'form': form}   
-    return render(request, 'blog/edit_form.html', {'form': form})
+    return render(request, 'blog/edit_form.html', context)

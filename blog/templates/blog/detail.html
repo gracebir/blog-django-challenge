@@ -7,10 +7,12 @@
             <span>Author : {{blog.author.username}}</span>
             <h3 class="b-card-title">{{blog.title}}</h3>
         </div>
-        <div>
-            <button class="btn btn-danger">Delete</button>
-            <a href="{% url 'edit-blog' blog.slug %}" class="btn btn-success">Edit</a>
-        </div>
+        {% if request.user == blog.author %}
+            <div>
+                <a class="btn btn-danger" href="{% url 'delete-blog' blog.slug %}">Delete</a>
+                <a href="{% url 'edit-blog' blog.slug %}" class="btn btn-success">Edit</a>
+            </div>
+        {% endif %}
     </div>
     <p>
         {{blog.content}}

@@ -1,3 +1,7 @@
+{% load static %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+<link rel="stylesheet" href="{% static 'styles/main.css' %}">
 <div class="form-container">
 {% if page == 'login' %}
 <div class="f-container">
@@ -22,7 +26,7 @@
     <h3 class="form-title">Sign in</h3>
     <form method="POST" action="">
         {% csrf_token %}
-        {{form.as_p}}
+        {% bootstrap_form form%}
         <input type="submit" value="Sign In">
     </form>
     <p>Have already sign up?</p>
